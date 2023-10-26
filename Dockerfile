@@ -1,5 +1,5 @@
 # Build Stage
-FROM rust:alpine as builder
+FROM rust:latest as builder
 
 RUN USER=root cargo new --bin simple-api-rust-axum
 WORKDIR ./axum-demo
@@ -12,7 +12,7 @@ RUN cargo build --release
 RUN rm src/*.rs
 ADD . ./
 RUN rm ./target/release/deps/simple-api-rust-axum*
-RUN cargo build --release
+RUN cargo build --release --no-cache
 
 
 FROM debian:buster-slim
