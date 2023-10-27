@@ -24,7 +24,7 @@ RUN cargo build --release
 #
 ## our final base
 FROM debian:bookworm-slim
-RUN pwd && Ls -ltr
+RUN pwd && ls -ltr
 
 ## 6. Copy the build artifacts from the build stage
 COPY --from=builder /simple-api-rust-axum/target/release/simple-api-rust-axum .
