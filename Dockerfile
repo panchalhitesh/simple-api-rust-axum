@@ -18,7 +18,7 @@ RUN rm src/*.rs
 COPY ./src ./src
 #
 ## 5. Build for release.
-RUN rm /target/release/deps/restapi*
+RUN rm /target/release/deps/simple-api-rust-axum*
 RUN cargo build --release
 
 #
