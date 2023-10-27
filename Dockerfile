@@ -1,42 +1,50 @@
-# Build Stage
-FROM rust:latest as builder
+# Build stage
 
-RUN USER=root cargo new --bin simple-api-rust-axum
-WORKDIR ./axum-demo
-COPY ./Cargo.toml ./Cargo.toml
+FROM rust:latest as T builder
 
-# Build empty app with downloaded dependencies to produce a stable image layer for next build
+COPY ./zscaler_ca.crt ./etc/ssl/certs/ca-certificates.crt
+
+# 1. Create a new empty shell project
+
+RUN USER=root cargo new --bin restapi WORKDIR /restapă
+
+# 2. Copy our manifests
+
+COPY./Cargo.lock ./Cargo.lock
+
+COPY/Cargo.toml ./Cargo.toml
+
+#3. Build only the dependencies to cache them
+
 RUN cargo build --release
 
-# Build web app with own code
 RUN rm src/*.rs
-ADD . ./
-RUN rm ./target/release/deps/simple-api-rust-axum*
-RUN cargo build --release --no-cache
 
+#4. Now that the dependency is built, copy your source code COPY./src./src
 
-FROM debian:buster-slim
-ARG APP=/usr/src/app
+#
 
-RUN apt-get update \
-    && apt-get install -y ca-certificates tzdata \
-    && rm -rf /var/lib/apt/lists/*
+## 5. Build for release.
 
-EXPOSE 3000
+RUN rm/target/release/deps/restapi*
 
-ENV TZ=Etc/UTC \
-    APP_USER=appuser
+RUN cargo build --release
 
-RUN groupadd $APP_USER \
-    && useradd -g $APP_USER $APP_USER \
-    && mkdir -p ${APP}
+#
 
-COPY --from=builder /axum-demo/target/release/simple-api-rust-axum ${APP}/axum-demo
-COPY --from=builder /simple-api-rust-axum/static ${APP}/static
+## our final base
 
-RUN chown -R $APP_USER:$APP_USER ${APP}
+FROM debian:bookworm-slim
 
-USER $APP_USER
-WORKDIR ${APP}
+RUN pwd && Ls -Ltr
+
+## 6. Copy the build artifacts from the build stage
+
+COPY --From-builder /restapi/target/release/restapi.
+
+RUN pwd && ls -ltr
+
+# Run the Binary
+
 
 CMD ["./simple-api-rust-axum"]
