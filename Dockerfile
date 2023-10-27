@@ -14,7 +14,8 @@ COPY ./Cargo.toml ./Cargo.toml
 RUN cargo build --release
 RUN rm src/*.rs
 
-#4. Now that the dependency is built, copy your source code COPY./src./src
+#4. Now that the dependency is built, copy your source code 
+COPY ./src ./src
 #
 ## 5. Build for release.
 RUN rm /target/release/deps/restapi*
@@ -23,9 +24,10 @@ RUN cargo build --release
 #
 ## our final base
 FROM debian:bookworm-slim
-RUN pwd && Ls -Ltr
+RUN pwd && Ls -ltr
+
 ## 6. Copy the build artifacts from the build stage
-COPY --From-builder /simple-api-rust-axum/target/release/simple-api-rust-axum .
+COPY --from=builder /simple-api-rust-axum/target/release/simple-api-rust-axum .
 RUN pwd && ls -ltr
 
 # Run the Binary
