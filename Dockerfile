@@ -1,5 +1,4 @@
 # Build stage
-
 FROM rust:latest as T builder
 
 # 1. Create a new empty shell project
