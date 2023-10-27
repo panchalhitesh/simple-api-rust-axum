@@ -2,7 +2,9 @@
 FROM rust:latest as T builder
 
 # 1. Create a new empty shell project
-RUN USER=root cargo new --bin simple-api-rust-axum WORKDIR /simple-api-rust-axum
+RUN USER=root cargo new --bin simple-api-rust-axum 
+
+WORKDIR /simple-api-rust-axum
 
 # 2. Copy our manifests
 COPY ./Cargo.lock ./Cargo.lock
