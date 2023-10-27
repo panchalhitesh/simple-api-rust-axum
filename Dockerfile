@@ -2,11 +2,9 @@
 
 FROM rust:latest as T builder
 
-COPY ./zscaler_ca.crt ./etc/ssl/certs/ca-certificates.crt
-
 # 1. Create a new empty shell project
 
-RUN USER=root cargo new --bin restapi WORKDIR /restapă
+RUN USER=root cargo new --bin simple-api-rust-axum WORKDIR /simple-api-rust-axum
 
 # 2. Copy our manifests
 
@@ -40,11 +38,10 @@ RUN pwd && Ls -Ltr
 
 ## 6. Copy the build artifacts from the build stage
 
-COPY --From-builder /restapi/target/release/restapi.
+COPY --From-builder /simple-api-rust-axum/target/release/simple-api-rust-axum.
 
 RUN pwd && ls -ltr
 
 # Run the Binary
-
 
 CMD ["./simple-api-rust-axum"]
