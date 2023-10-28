@@ -2,7 +2,7 @@
 FROM rust:latest as builder
 
 # 1. Create a new empty shell project
-RUN USER=root cargo new --bin simple-api-rust-axum 
+RUN USER=root cargo new --bin simple-api-rust-axum
 
 WORKDIR /simple-api-rust-axum
 
