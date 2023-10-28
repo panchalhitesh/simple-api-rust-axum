@@ -19,7 +19,7 @@ COPY ./src ./src
 #
 ## 5. Build for release.
 RUN pwd && ls -ltr
-RUN rm ./simple-api-rust-axum/target/release/deps/simple-api-rust-axum*
+RUN rm ./target/release/deps/*
 RUN cargo build --release
 
 #
